@@ -12,7 +12,7 @@
 using namespace std;
 
 int const BUFFER_SIZE = 8192;
-string const SOCKET_FILE = "/tmp/OS_net_descriptor_passing";
+string const SOCKET_FILE = "/tmp/OS_net_descriptor_passing.socket";
 
 int main() {
     char buffer[CMSG_SPACE(sizeof(int))], data[BUFFER_SIZE];
@@ -44,7 +44,7 @@ int main() {
     }
 
 
-    if (recvmsg(fileDescriptor, &msg, 0)) {
+    if (recvmsg(fileDescriptor, &msg, 0) == -1) {
         perror("recvmag");
         exit(EXIT_FAILURE);
     }
@@ -58,7 +58,6 @@ int main() {
     dup2(*CMSG_DATA(cmsg), 1);
     bool working  = true;
     while (working) {
-        cout << "Enter message ";
         getline(cin, message);
         if (message == ":q") {
             working = false;

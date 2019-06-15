@@ -13,7 +13,7 @@ using namespace std;
 
 
 int const BUFFER_SIZE = 8192;
-string const SOCKET_FILE = "/tmp/OS_net_descriptor_passing";
+string const SOCKET_FILE = "/tmp/OS_net_descriptor_passing.socket";
 
 
 int main() {
@@ -26,6 +26,7 @@ int main() {
         perror("socket");
         exit(EXIT_FAILURE);
     }
+    unlink(SOCKET_FILE.c_str());
 
     struct sockaddr_un server{};
     server.sun_family = AF_UNIX;
@@ -39,7 +40,6 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    unlink(SOCKET_FILE.c_str());
 
     bool working = true;
     while(working) {
